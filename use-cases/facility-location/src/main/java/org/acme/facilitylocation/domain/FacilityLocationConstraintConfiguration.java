@@ -28,9 +28,19 @@ public class FacilityLocationConstraintConfiguration {
     static final String DISTANCE_FROM_FACILITY = "distance from facility";
 
     @ConstraintWeight(FACILITY_CAPACITY)
-    HardSoftLongScore facilityCapacity = HardSoftLongScore.ofHard(1);
+    final HardSoftLongScore facilityCapacity;
     @ConstraintWeight(FACILITY_SETUP_COST)
-    HardSoftLongScore facilitySetupCost = HardSoftLongScore.ofSoft(2);
+    final HardSoftLongScore facilitySetupCost;
     @ConstraintWeight(DISTANCE_FROM_FACILITY)
-    HardSoftLongScore distanceFromFacility = HardSoftLongScore.ofSoft(5);
+    final HardSoftLongScore distanceFromFacility;
+
+    public FacilityLocationConstraintConfiguration(long facilityCapacity, long facilitySetupCost, long distanceFromFacility) {
+        this.facilityCapacity = HardSoftLongScore.ofHard(facilityCapacity);
+        this.facilitySetupCost = HardSoftLongScore.ofSoft(facilitySetupCost);
+        this.distanceFromFacility = HardSoftLongScore.ofSoft(distanceFromFacility);
+    }
+
+    public FacilityLocationConstraintConfiguration() {
+        this(1, 2, 5);
+    }
 }

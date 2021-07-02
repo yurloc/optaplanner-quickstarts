@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 import org.acme.facilitylocation.domain.Consumer;
 import org.acme.facilitylocation.domain.Facility;
+import org.acme.facilitylocation.domain.FacilityLocationConstraintConfiguration;
 import org.acme.facilitylocation.domain.FacilityLocationProblem;
 import org.acme.facilitylocation.domain.Location;
 
@@ -41,6 +42,11 @@ public class DemoDataBuilder {
     private long setupCostStandardDeviation;
     private Location southWestCorner;
     private Location northEastCorner;
+
+    // weights
+    private long facilityCapacityWeight = 1;
+    private long facilitySetupCostWeight = 2;
+    private long distanceFromFacilityWeight = 5;
 
     private DemoDataBuilder() {
     }
@@ -89,6 +95,21 @@ public class DemoDataBuilder {
         return this;
     }
 
+    public DemoDataBuilder setFacilityCapacityWeight(long facilityCapacityWeight) {
+        this.facilityCapacityWeight = facilityCapacityWeight;
+        return this;
+    }
+
+    public DemoDataBuilder setFacilitySetupCostWeight(long facilitySetupCostWeight) {
+        this.facilitySetupCostWeight = facilitySetupCostWeight;
+        return this;
+    }
+
+    public DemoDataBuilder setDistanceFromFacilityWeight(long distanceFromFacilityWeight) {
+        this.distanceFromFacilityWeight = distanceFromFacilityWeight;
+        return this;
+    }
+
     public FacilityLocationProblem build() {
         if (demand < 1) {
             throw new IllegalStateException("Demand (" + demand + ") must be greater than zero.");
@@ -130,6 +151,10 @@ public class DemoDataBuilder {
                 .limit(consumerCount)
                 .collect(Collectors.toList());
 
-        return new FacilityLocationProblem(facilities, consumers, southWestCorner, northEastCorner);
+        FacilityLocationConstraintConfiguration constraintConfiguration = new FacilityLocationConstraintConfiguration(
+                facilityCapacityWeight,
+                facilitySetupCostWeight,
+                distanceFromFacilityWeight);
+        return new FacilityLocationProblem(facilities, consumers, constraintConfiguration, southWestCorner, northEastCorner);
     }
 }

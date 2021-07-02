@@ -52,10 +52,12 @@ public class FacilityLocationProblem {
     public FacilityLocationProblem(
             List<Facility> facilities,
             List<Consumer> consumers,
+            FacilityLocationConstraintConfiguration constraintConfiguration,
             Location southWestCorner,
             Location northEastCorner) {
         this.facilities = facilities;
         this.consumers = consumers;
+        this.constraintConfiguration = constraintConfiguration;
         this.southWestCorner = southWestCorner;
         this.northEastCorner = northEastCorner;
     }
@@ -64,6 +66,7 @@ public class FacilityLocationProblem {
         FacilityLocationProblem problem = new FacilityLocationProblem(
                 emptyList(),
                 emptyList(),
+                new FacilityLocationConstraintConfiguration(),
                 new Location(-90, -180),
                 new Location(90, 180));
         problem.setScore(HardSoftLongScore.ZERO);
